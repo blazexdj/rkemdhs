@@ -51,6 +51,8 @@ import com.guardon.server.ServerService;
 import com.guardon.server.domain.Server;
 import com.guardon.user.UserService;
 import com.guardon.user.domain.User;
+import com.guardon.workflow.WorkflowService;
+import com.guardon.workflow.domain.Workflow;
 import com.mysql.jdbc.Statement;
 
 
@@ -78,10 +80,14 @@ public class UserController {
  @Inject
  @Named("logService") 
  LogService logService;
- 
+
  @Inject
  @Named("optionService")
  OptionService optionService;
+ 
+ @Inject
+ @Named("workflowService")
+ WorkflowService workflowService;
  
 
  
@@ -943,10 +949,51 @@ public void setServerLock(boolean serverLock) {
  
  @RequestMapping("/insertWorkflow.do") // 워크플로우 페이지 작성 
  public String insertWorkflow(HttpServletRequest request) throws Exception{
-	 String step, workflowName, workflowDesc;
+	 String step, workflowName, workflowDesc, workflowStep="first";
+	 DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	 Date now = new Date();
+	 String updateDate = df.format(now);
+	 Workflow workflow = new Workflow();
+	 
 	 step = request.getParameter("step");
 	 workflowName = request.getParameter("workflowName");
 	 workflowDesc = request.getParameter("workflowDesc");
+	 
+	 String[] arr1 = step.split("|");
+	 String[] arr2;
+	 
+	 for (int i = 0; i < arr1.length; i++) {
+			arr2 = arr1[i].split(",");
+			for (int j = 0; j < arr2.length; j++) {
+				switch (i) {
+				case 0:
+					workflowStep = "first";
+					break;
+				case 1:
+					workflowStep = "second";
+					break;
+				case 2:
+					workflowStep = "third";
+					break;
+				case 3:
+					workflowStep = "fourth";
+					break;
+				case 4:
+					workflowStep = "fifth";
+					break;
+				default:
+					break;
+				}
+				workflow.setUserId(arr2[j]);
+				workflow.setWorkflowStep(workflowStep);
+
+				workflow.setWorkflowName(workflowName);
+				workflow.setWorkflowDesc(workflowDesc);
+				workflow.setUpdateDate(updateDate);
+				
+				workflowService.insertWorkflow(workflow);
+			}
+	}
 	 
 	 System.out.println("ssssssssssssss : "+step);
 	 System.out.println("ssssssssssssss : "+workflowName);

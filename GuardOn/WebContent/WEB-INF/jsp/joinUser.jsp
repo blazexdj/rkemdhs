@@ -19,14 +19,14 @@
 
 		function submitForm() {
 			var form = document.forms['test_form'];
-			var userPwd=document.password_form.userPwd;
-			var confirmPwd=document.password_form.confirmPwd;
-			
-			if(userPwd==confirmPwd)
-			form.action = 'insertUser.do';
+			var userPwd=document.password_form.userPwd.value;
+			var confirmPwd=document.password_form.confirmPwd.value;
+			if(userPwd==confirmPwd){
+				form.action = 'insertUser.do';
+				form.submit();
+			}
 			else
 				alert("비밀번호 또는 아이디 중복 체크를 확인하십시오");
-			form.submit();
 			}
 
 		function idduplicate(url){
@@ -226,7 +226,7 @@ addLoadEvent(function() {
       <br>
    <div id="apDiv1">
   <!--  <input type="submit" value="가입" class="button" onclick=""/>-->
-  <input type="button" value="가입" class="button" onclick="submitForm()"/>
+  <input type="button" value="가입" class="button" onclick="submitForm();"/>
   <input type="button" value="취소" class="button" onclick="javascript:history.back()" />
   <br>
   <br>
