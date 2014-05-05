@@ -29,9 +29,25 @@ function test1(tr){
 			break;
 		}
 	}
+	
 	document.getElementById("userName"+(checkIndex+1)).value = name+" "+userLevel;
 	document.getElementById("userId"+(checkIndex+1)).value = id;
 	document.getElementById("item"+(checkIndex+1)).value =item;
+	
+	
+
+	/*
+	for (var j = 1; j <= 5; j++) {
+		for (var k = 1; k <= 5 ; k++) {
+			
+		}
+	}
+	if (document.getElementById("userId"+(checkIndex+(j-1)).value==document.getElementById("userId"+(checkIndex+(j)).value))) {
+		alert("중복된 사용자가 있습니다.");
+	} else {
+		alert("1111111");
+	}*/
+
 	
 }
 

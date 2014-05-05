@@ -10,7 +10,15 @@
 <link rel="stylesheet" href="<%=cp%>/style/plugin/asyncPaging.css" type="text/css" media="print, projection, screen" />
 <script type="text/javascript" src="<%=cp%>/js/plugin/jquery-2.1.0.min.js"></script>
 <script type="text/javascript" src="<%=cp%>/js/plugin/asyncPaging.js"></script>
-
+<script type="text/javascript">
+function checkAll(value) {
+    var checkboxList = document.getElementsByName("temp");
+    for (var i = 0; i < checkboxList.length; i++) {
+        checkboxList[i].checked = value;
+    }
+}
+</script>
+</head>
 <body>
 <div class="container">
   <div class="header"><strong>
