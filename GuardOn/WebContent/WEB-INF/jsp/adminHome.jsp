@@ -25,7 +25,7 @@
 					contentType : "charset=UTF-8",
 					success: function(response, textStatus, jqXHR){
 						var uncheckString = "승인해야함";
-						var message ="승인 요청이 도착 했습니다.";
+						//var message ="승인 요청이 도착 했습니다.";
 						
 						if(uncheckString==response){
 							//console.log('특정함수');
