@@ -25,6 +25,12 @@
 			#workflowStep#,
 			#updateDate#
 			)
-	</insert>	
+	</insert>
+	
+	<select id="getWorkflowList" parameterClass="string" resultClass="workflow">
+		SELECT workflowName, workflowDesc, workflowStep, involveServerCount, updateDate
+		FROM tbl_workflow
+		WHERE userId=#value#	
+	</select>
 	
 </sqlMap>

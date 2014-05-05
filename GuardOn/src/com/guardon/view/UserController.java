@@ -200,6 +200,16 @@ public void setServerLock(boolean serverLock) {
  @RequestMapping("test.do")
  //@Scheduled(fixedDelay=5000)
  public void test(HttpServletRequest request) throws Exception{
+	 String userId="user";
+	 ArrayList<Workflow> workflowList = workflowService.getWorkflowList(userId);
+	 for (int i = 0; i < workflowList.size(); i++) {
+		System.out.println(workflowList.get(i).getWorkflowName());
+		System.out.println(workflowList.get(i).getWorkflowDesc());
+		System.out.println(workflowList.get(i).getWorkflowStep());
+		System.out.println(workflowList.get(i).getUpdateDate());
+		System.out.println(workflowList.get(i).getInvolveServerCount());
+		System.out.println("==============================================");
+	}
  }
  
  @RequestMapping("option.do")

@@ -1,5 +1,7 @@
 package com.guardon.workflow.impl;
 
+import java.util.ArrayList;
+
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -19,6 +21,11 @@ public class WorkflowDAOImpl implements WorkflowDAO {
 	@Override
 	public void insertWorkflow(Workflow workflow) throws Exception {
 		sqlMapClient.insert("Workflow.insertWorkflow", workflow);
+	}
+	
+	@Override
+	public ArrayList<Workflow> getWorkflowList(String userId) throws Exception {
+		return (ArrayList<Workflow>)sqlMapClient.queryForList("Workflow.getWorkflowList", userId);
 	}
 
 }
