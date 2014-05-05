@@ -1097,10 +1097,23 @@ public void setServerLock(boolean serverLock) {
  
  @RequestMapping("workflow.do")
  public String workflow(HttpServletRequest request) throws Exception{
-	 //Integer.parseInt(request.getParameter("page"))
-	 request.setAttribute("userList", userService.getUserList(1));
-	 request.setAttribute("serverList", arg1);
+	 
+	 int page=1;	 
+	 request.setAttribute("serverList", serverService.getServerList(page));
+	 
 	 return "workflowServerSelect";
+ }
+ 
+ @RequestMapping("createWorkFlow.do")
+ public String createWorkFlow(HttpServletRequest request) throws Exception{
+	 
+	 String serverName[] = request.getParameterValues("temp");
+	 System.out.println(serverName);
+	 
+	 int page=1;	 
+	 request.setAttribute("userList", userService.getUserList(page));
+	 
+	 return "workflow";
  }
  
  @RequestMapping("email.do")

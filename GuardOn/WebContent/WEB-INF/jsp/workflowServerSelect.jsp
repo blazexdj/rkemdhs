@@ -34,7 +34,7 @@
     
      <div>
 		 <center>
-		 <form action="workFlowServerList.do" method="post">
+		 <form action="createWorkFlow.do" method="post">
 		  	<table>
 		     	<tr>
 		        	<th><input type="checkbox" id="checkboxAll" onchange="javascript:checkAll(this.checked);" /></th>
