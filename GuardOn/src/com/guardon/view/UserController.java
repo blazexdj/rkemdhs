@@ -28,6 +28,7 @@ import javax.mail.Transport;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import javax.print.attribute.standard.Severity;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -968,6 +969,11 @@ public void setServerLock(boolean serverLock) {
 	 step = request.getParameter("step");
 	 workflowName = request.getParameter("workflowName");
 	 workflowDesc = request.getParameter("workflowDesc");
+	 
+	 String serverNameList[] = request.getParameterValues("serverNameList");
+	 for (int i = 0; i < serverNameList.length; i++) {
+		System.out.println(serverNameList[i]);
+	}
 	 
 	 String[] arr1 = step.split("[|]");
 	 String[] arr2;

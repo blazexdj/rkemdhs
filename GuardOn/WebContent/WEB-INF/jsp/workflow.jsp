@@ -192,6 +192,9 @@ function test1(tr){
 		<br/>
 		<br/>
 		</div>
+		<c:forEach var="i" items="${serverNameList}">
+		<input type="hidden" value="${i}" name="serverNameList">
+		</c:forEach>
 		<input type="submit" value="워크플로우 등록" onclick="getItem()" class="input-button" id="btn-get" style="height: 35px">
 		<br/>
 		<br/>
