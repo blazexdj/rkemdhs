@@ -959,7 +959,7 @@ public void setServerLock(boolean serverLock) {
 	 workflowName = request.getParameter("workflowName");
 	 workflowDesc = request.getParameter("workflowDesc");
 	 
-	 String[] arr1 = step.split("|");
+	 String[] arr1 = step.split("[|]");
 	 String[] arr2;
 	 
 	 for (int i = 0; i < arr1.length; i++) {
@@ -1099,7 +1099,8 @@ public void setServerLock(boolean serverLock) {
  public String workflow(HttpServletRequest request) throws Exception{
 	 //Integer.parseInt(request.getParameter("page"))
 	 request.setAttribute("userList", userService.getUserList(1));
-	 return "workflow";
+	 request.setAttribute("serverList", arg1);
+	 return "workflowServerSelect";
  }
  
  @RequestMapping("email.do")

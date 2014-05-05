@@ -28,4 +28,5 @@
 	<sqlMap resource="sql/request-service-mapping.xml"/>
 	<sqlMap resource="sql/log-service-mapping.xml"/>
 	<sqlMap resource="sql/option-service-mapping.xml"/>
+	<sqlMap resource="sql/workflow-service-mapping.xml"/>
 </sqlMapConfig>
