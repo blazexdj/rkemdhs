@@ -1108,7 +1108,10 @@ public void setServerLock(boolean serverLock) {
  public String createWorkFlow(HttpServletRequest request) throws Exception{
 	 
 	 String serverName[] = request.getParameterValues("temp");
-	 System.out.println(serverName);
+	 for (int i = 0; i < serverName.length; i++) {
+		 System.out.println(serverName[i]);
+	} 
+	 request.setAttribute("serverNameList", serverName);
 	 
 	 int page=1;	 
 	 request.setAttribute("userList", userService.getUserList(page));
