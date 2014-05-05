@@ -9,7 +9,7 @@ import com.guardon.option.OptionDAO;
 import com.guardon.option.domain.Option;
 import com.ibatis.sqlmap.client.SqlMapClient;
 
-@Repository
+@Repository("optionDAO")
 public class OptionDAOImpl implements OptionDAO{
 	
 	 @Inject

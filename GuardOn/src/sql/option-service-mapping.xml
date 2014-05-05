@@ -3,7 +3,7 @@
 						"http://ibatis.apache.org/dtd/sql-map-2.dtd">
 						
 <sqlMap namespace="Option">
-	<typeAlias alias="option" type="com.guardon.log.domain.Option"/>
+	<typeAlias alias="option" type="com.guardon.option.domain.Option"/>
 	
 	<resultMap class="option" id="resultOption">
 		<result property="pwdLevel" column="pwdLevel" />
@@ -12,6 +12,7 @@
 		<result property="loginFailedCount" column="loginFailedCount" />
 		<result property="pwdComplexity" column="pwdComplexity" />		
 	</resultMap>
+	
 	
 	<update id="updateOption" parameterClass="option">
 		UPDATE tbl_option
@@ -39,4 +40,5 @@
 	<select id="getPwdComplexity">
 		SELECT 
 	</select>
+
 </sqlMap>

@@ -4,8 +4,11 @@ public class Workflow {
 
 	private String workflowName;
 	private String workflowDesc;
-	private int workflowLevel;
+	private String workflowStep;
 	private String userId;
+	private String updateDate;
+	private int involveServerCount;
+	
 	public String getWorkflowName() {
 		return workflowName;
 	}
@@ -18,11 +21,11 @@ public class Workflow {
 	public void setWorkflowDesc(String workflowDesc) {
 		this.workflowDesc = workflowDesc;
 	}
-	public int getWorkflowLevel() {
-		return workflowLevel;
+	public String getWorkflowStep() {
+		return workflowStep;
 	}
-	public void setWorkflowLevel(int workflowLevel) {
-		this.workflowLevel = workflowLevel;
+	public void setWorkflowStep(String workflowStep) {
+		this.workflowStep = workflowStep;
 	}
 	public String getUserId() {
 		return userId;
@@ -30,6 +33,19 @@ public class Workflow {
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
+	public String getUpdateDate() {
+		return updateDate;
+	}
+	public void setUpdateDate(String updateDate) {
+		this.updateDate = updateDate;
+	}
+	public int getInvolveServerCount() {
+		return involveServerCount;
+	}
+	public void setInvolveServerCount(int involveServerCount) {
+		this.involveServerCount = involveServerCount;
+	}
+	
 	
 	
 }

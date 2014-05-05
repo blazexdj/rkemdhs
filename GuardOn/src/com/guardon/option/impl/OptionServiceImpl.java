@@ -3,10 +3,13 @@ package com.guardon.option.impl;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import org.springframework.stereotype.Service;
+
 import com.guardon.option.OptionDAO;
 import com.guardon.option.OptionService;
 import com.guardon.option.domain.Option;
 
+@Service("optionService")
 public class OptionServiceImpl implements OptionService{
 	
 	@Inject
