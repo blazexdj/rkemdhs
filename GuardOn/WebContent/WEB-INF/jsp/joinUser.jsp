@@ -18,7 +18,7 @@
 
 
 		function submitForm() {
-			var form = document.forms['test_form'];
+			var form = document.forms['password_form'];
 			var userPwd=document.password_form.userPwd.value;
 			var confirmPwd=document.password_form.confirmPwd.value;
 			if(userPwd==confirmPwd){
