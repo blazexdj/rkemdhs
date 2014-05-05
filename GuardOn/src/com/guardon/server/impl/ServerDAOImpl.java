@@ -1,6 +1,7 @@
 package com.guardon.server.impl;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -68,11 +69,22 @@ public class ServerDAOImpl implements ServerDAO{
 	public String getServerOS(String serverName) throws Exception {
 		return sqlMapClient.queryForObject("Server.getServerOS", serverName).toString();
 	}
+	
+	@Override
+	public String getWorkflowName (String serverName) throws Exception {
+		return sqlMapClient.queryForObject("Server.getWorkflowName", serverName).toString();
+	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public ArrayList<Server> getServerList(int startIndex) throws Exception {
 		return ((ArrayList<Server>)sqlMapClient.queryForList("Server.getServerList", startIndex));
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public ArrayList<Server> getWfServerList(int startIndex) throws Exception {
+		return ((ArrayList<Server>)sqlMapClient.queryForList("Server.getWfServerList", startIndex));
 	}
 
 	@Override
@@ -88,6 +100,11 @@ public class ServerDAOImpl implements ServerDAO{
 	@Override
 	public int getServerListCount() throws Exception {
 		return Integer.parseInt(sqlMapClient.queryForObject("Server.getServerListCount").toString());
+	}
+	
+	@Override
+	public void setWorkflowName(Map<String, String> map) throws Exception {
+		sqlMapClient.update("Server.setWorkflowName", map);
 	}
 
 }

@@ -25,6 +25,8 @@ public interface UserService {
  
  public ArrayList<User> getUserList(int page) throws Exception;
  
+ public ArrayList<User> getWfUserList(int page) throws Exception;
+ 
  public void setActive(String userId) throws Exception;
  
  public void setDeactive(String userId) throws Exception;

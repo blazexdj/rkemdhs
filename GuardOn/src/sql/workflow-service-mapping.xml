@@ -17,13 +17,14 @@
 	
 	<insert id="insertWorkflow" parameterClass="workflow">
 		INSERT INTO 
-		tbl_workflow(workflowName, userId, workflowDesc, workflowStep, updateDate) 
+		tbl_workflow(workflowName, userId, workflowDesc, workflowStep, updateDate, involveServerCount) 
 		VALUES(
 			#workflowName#,
 			#userId#,
 			#workflowDesc#, 
 			#workflowStep#,
-			#updateDate#
+			#updateDate#,
+			#involveServerCount#
 			)
 	</insert>
 	

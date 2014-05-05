@@ -12,8 +12,15 @@ public class Server {
 	private String serverOS;
 	private String port;
 	private String dbName;
+	private String workflowName;
 	
 	
+	public String getWorkflowName() {
+		return workflowName;
+	}
+	public void setWorkflowName(String workflowName) {
+		this.workflowName = workflowName;
+	}
 	public String getDbName() {
 		return dbName;
 	}

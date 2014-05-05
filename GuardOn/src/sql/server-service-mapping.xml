@@ -13,7 +13,8 @@
 		<result property="connectType" column="connectType" />
 		<result property="ipAddress" column="ipAddress" />
 		<result property="serverOS" column="serverOS" />
-		<result property="dbName" column="dbName" />		
+		<result property="dbName" column="dbName" />	
+		<result property="workflowName" column="workflowName" />		
 		
 	</resultMap>
 	
@@ -33,6 +34,12 @@
 		WHERE serverName = #value#
 	</select>
 	
+	<select id="getWorkflowName" parameterClass="string" resultClass="string">
+		SELECT IFNULL(workflowName, 'none')
+		FROM tbl_server
+		WHERE serverName = #value#
+	</select>
+	
 	<select id="getServerIpAddress" parameterClass="string" resultClass="string">
 		SELECT ipAddress
 		FROM tbl_server
@@ -42,6 +49,13 @@
 	<select id="getServerList" parameterClass="int" resultClass="server">
 		SELECT serverName, ipAddress, serverDesc
 		FROM tbl_server LIMIT #value#, 15
+	</select>
+	
+	<select id="getWfServerList" parameterClass="int" resultClass="server">
+		SELECT serverName, ipAddress, serverDesc
+		FROM tbl_server
+		WHERE workflowName IS NULL
+		LIMIT #value#, 15
 	</select>
 	
 	<select id="getServerUrl" parameterClass="string" resultClass="string">
@@ -89,6 +103,13 @@
 			#port#,
 			#dbName#)
 	</insert>
+	
+	<update id="setWorkflowName" parameterClass="map">
+		UPDATE tbl_server 
+		SET workflowName = #workflowName#
+		WHERE serverName = #serverName#
+		
+	</update>
 
 	
 </sqlMap>

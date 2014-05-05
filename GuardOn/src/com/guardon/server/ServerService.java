@@ -1,6 +1,7 @@
 package com.guardon.server;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 import com.guardon.server.domain.Server;
 
@@ -25,12 +26,18 @@ public interface ServerService {
 	public String getConnectType(String serverName)throws Exception;
 	
 	public String getServerOS(String serverName)throws Exception;
+	
+	public String getWorkflowName(String serverName)throws Exception;
 
 	public ArrayList<Server> getServerList(int page) throws Exception; // 서버설치시 서버리스트
+	
+	public ArrayList<Server> getWfServerList(int page) throws Exception;
 	
 	public int getServerListCount() throws Exception;
 	
 	public String getServerIpAddress(String serverName) throws Exception;
 	
 	public String getServerName(String serverName) throws Exception;
+	
+	public void setWorkflowName(Map<String, String> map) throws Exception;
 }

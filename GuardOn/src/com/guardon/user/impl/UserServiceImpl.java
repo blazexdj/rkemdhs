@@ -67,6 +67,11 @@ public ArrayList<User> getUserList(int page) throws Exception {
 }
 
 @Override
+public ArrayList<User> getWfUserList(int page) throws Exception {
+	return userDAO.getWfUserList(page);
+}
+
+@Override
 public void setActive(String userId) throws Exception {
 	userDAO.setActive(userId);
 }

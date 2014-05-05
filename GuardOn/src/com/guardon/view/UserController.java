@@ -241,13 +241,17 @@ public void setServerLock(boolean serverLock) {
 	 Request rq = new Request();
 	 Map<String, String> map = new HashMap<>();
 	 
-	 String serverName, connectId, userId, requestDesc, pwdType;
+	 String serverName, connectId, userId, requestDesc, pwdType, approved;
 	
 	 serverName = request.getParameter("checkList");
 	 connectId = request.getParameter("connectId");
 	 userId = (String)session.getAttribute("userId");
 	 requestDesc = request.getParameter("requestDesc");
 	 pwdType = "OTP";
+	 if (serverService.getWorkflowName(serverName).equals("none"))
+		 approved = "unchecked";
+	 else
+		 approved = "first";
 	 
 	 
 	 map.put("serverName", serverName);
@@ -269,6 +273,7 @@ public void setServerLock(boolean serverLock) {
 	 rq.setUserId(userId);
 	 rq.setRequestDesc(requestDesc);
 	 rq.setPwdType(pwdType);
+	 rq.setApproved(approved);
 	 
 	 requestService.insertRequest(rq);
 	 
@@ -316,6 +321,7 @@ public void setServerLock(boolean serverLock) {
  public String outPeriodPwdApproval(HttpServletRequest request, HttpSession session) throws Exception{
 	 Request rq = new Request();
 	 Map<String, String> map = new HashMap<>();
+	 String approved;
 	 
 	 DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	 Date now = new Date();
@@ -327,6 +333,11 @@ public void setServerLock(boolean serverLock) {
 	 String pwdType = "period";
 	 String userId = session.getAttribute("userId").toString();
 	 String requestDesc = request.getParameter("requestDesc");
+	 
+	 if (serverService.getWorkflowName(serverName).equals("none"))
+		 approved = "unchecked";
+	 else
+		 approved = "first";
 	 
 	 map.put("serverName", serverName);
 	 map.put("connectId", connectId);	
@@ -344,6 +355,7 @@ public void setServerLock(boolean serverLock) {
 	 rq.setPwdType(pwdType);
 	 rq.setStartDate(startDate);
 	 rq.setEndDate(endDate);
+	 rq.setApproved(approved);
 	 
 	 requestService.insertRequest(rq);
 	 return "outUserOtpRequestDone";
@@ -352,6 +364,7 @@ public void setServerLock(boolean serverLock) {
  @RequestMapping("periodPwdApproval.do")
  public String periodPwdApproval(HttpServletRequest request, HttpSession session) throws Exception{
 	 Request rq = new Request();
+	 String approved;
 	 Map<String, String> map = new HashMap<>();
 	 
 	 DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -364,6 +377,11 @@ public void setServerLock(boolean serverLock) {
 	 String pwdType = "period";
 	 String userId = session.getAttribute("userId").toString();
 	 String requestDesc = request.getParameter("requestDesc");
+	 
+	 if (serverService.getWorkflowName(serverName).equals("none"))
+		 approved = "unchecked";
+	 else
+		 approved = "first";
 	 
 	 map.put("serverName", serverName);
 	 map.put("connectId", connectId);	
@@ -382,6 +400,7 @@ public void setServerLock(boolean serverLock) {
 	 rq.setPwdType(pwdType);
 	 rq.setStartDate(startDate);
 	 rq.setEndDate(endDate);
+	 rq.setApproved(approved);
 	 
 	 requestService.insertRequest(rq);
 	 return "userOtpRequestDone";
@@ -961,20 +980,33 @@ public void setServerLock(boolean serverLock) {
  @RequestMapping("/insertWorkflow.do") // 워크플로우 페이지 작성 
  public String insertWorkflow(HttpServletRequest request) throws Exception{
 	 String step, workflowName, workflowDesc, workflowStep="first";
+	 int involveServerCount;
 	 DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	 Date now = new Date();
 	 String updateDate = df.format(now);
 	 Workflow workflow = new Workflow();
+	 Map<String, String> map = new HashMap<>();
 	 
 	 step = request.getParameter("step");
 	 workflowName = request.getParameter("workflowName");
 	 workflowDesc = request.getParameter("workflowDesc");
+	 map.put("workflowName", workflowName);
 	 
 	 String serverNameList[] = request.getParameterValues("serverNameList");
 	 for (int i = 0; i < serverNameList.length; i++) {
-		System.out.println(serverNameList[i]);
+		 map.put("serverName", serverNameList[i]);
+		 serverService.setWorkflowName(map);		
 	}
 	 
+		involveServerCount = serverNameList.length;
+
+		workflow.setWorkflowName(workflowName);
+		workflow.setWorkflowDesc(workflowDesc);
+		workflow.setUpdateDate(updateDate);
+		workflow.setInvolveServerCount(involveServerCount);
+		
+		System.out.println(involveServerCount);
+
 	 String[] arr1 = step.split("[|]");
 	 String[] arr2;
 	 
@@ -1002,10 +1034,6 @@ public void setServerLock(boolean serverLock) {
 				}
 				workflow.setUserId(arr2[j]);
 				workflow.setWorkflowStep(workflowStep);
-
-				workflow.setWorkflowName(workflowName);
-				workflow.setWorkflowDesc(workflowDesc);
-				workflow.setUpdateDate(updateDate);
 				
 				workflowService.insertWorkflow(workflow);
 			}
@@ -1115,7 +1143,7 @@ public void setServerLock(boolean serverLock) {
  public String workflow(HttpServletRequest request) throws Exception{
 	 
 	 int page=1;	 
-	 request.setAttribute("serverList", serverService.getServerList(page));
+	 request.setAttribute("serverList", serverService.getWfServerList(page));
 	 
 	 return "workflowServerSelect";
  }
@@ -1130,7 +1158,7 @@ public void setServerLock(boolean serverLock) {
 	 request.setAttribute("serverNameList", serverName);
 	 
 	 int page=1;	 
-	 request.setAttribute("userList", userService.getUserList(page));
+	 request.setAttribute("userList", userService.getWfUserList(page));
 	 
 	 return "workflow";
  }
@@ -1386,16 +1414,15 @@ public void setServerLock(boolean serverLock) {
 	 request.setAttribute("userDepartment", user.getUserDepartment());
 	 request.setAttribute("userLevel", user.getUserLevel());
 	 request.setAttribute("companyNumber", user.getCompanyNumber());
-	 request.setAttribute("userEmail", user.getUserEmail());
-	 
+	 request.setAttribute("userEmail", user.getUserEmail());	 
+	
 	 String fullPhoneNumber = user.getPhoneNumber();
-	 String phoneNumber = fullPhoneNumber.substring(0, 3);
-	 System.out.println(phoneNumber);
+	 String phoneNumber = fullPhoneNumber.substring(0, 3);	 
 	 String userCp2 = fullPhoneNumber.substring(3, 7);
 	 String userCp3 = fullPhoneNumber.substring(7);
 	 request.setAttribute("phoneNumber", phoneNumber);
 	 request.setAttribute("userCp2", userCp2);
-	 request.setAttribute("userCp3", userCp3);
+	 request.setAttribute("userCp3", userCp3);	 
 	 
 	 if (userType.equals("admin"))
 		 return "updateAdmin";

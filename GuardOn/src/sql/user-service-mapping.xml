@@ -80,6 +80,12 @@
 	</select>
 	<!--  limit $value$*1-1, 1 -->
 	
+	<select id="getWfUserList" parameterClass="int" resultClass="user">
+		SELECT userId, userName, phoneNumber, userDepartment, userLevel, userEmail 
+		FROM tbl_user
+		WHERE userType NOT IN ('outUser')
+	</select>
+	
 	<update id="setActive" parameterClass="string">
 		UPDATE tbl_user 
 		SET active = true

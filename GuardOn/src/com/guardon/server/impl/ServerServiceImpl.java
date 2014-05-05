@@ -1,6 +1,7 @@
 package com.guardon.server.impl;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -67,11 +68,22 @@ public class ServerServiceImpl implements ServerService{
 	public String getServerOS (String serverName) throws Exception {
 		return serverDAO.getServerOS(serverName);
 	}
+	
+	@Override
+	public String getWorkflowName (String serverName) throws Exception {
+		return serverDAO.getWorkflowName(serverName);
+	}
 
 	@Override
 	public ArrayList<Server> getServerList(int page) throws Exception {
 		int startIndex = (page-1)*15;
 		return serverDAO.getServerList(startIndex);
+	}
+	
+	@Override
+	public ArrayList<Server> getWfServerList(int page) throws Exception {
+		int startIndex = (page-1)*15;
+		return serverDAO.getWfServerList(startIndex);
 	}
 
 	@Override
@@ -89,5 +101,9 @@ public class ServerServiceImpl implements ServerService{
 		return serverDAO.getServerListCount();
 	}
 	
+	@Override
+	public void setWorkflowName(Map<String, String> map) throws Exception {
+		serverDAO.setWorkflowName(map);
+	}
 
 }
