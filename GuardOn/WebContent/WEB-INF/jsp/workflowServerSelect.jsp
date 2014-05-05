@@ -63,6 +63,57 @@
 		</center>
 	</div>
   
+   <script>
+	$(document).ready(function(){
+		
+		//paging 관련
+		asyncPaging.title.previous = "<";
+		asyncPaging.title.next = ">";
+		asyncPaging.onclick = "pageMove()";
+
+		asyncPaging.init("paging", Number($("#serverListCount").val()), 15, Number($("#currentPage").val()));
+		var serverIps = $(".server-ip");
+		for(var i=0; i<serverIps.length; i++){
+			tcpCheck({ ip: serverIps[i].innerHTML.split(":")[0] }, function(resp, index){
+				var result = JSON.parse(resp).result;
+				$(".tcp-check")[index].innerHTML = result;
+			}, i);
+		}
+		
+		
+	});
+	
+	var tcpCheckCallCount = 10;
+	function tcpCheck(data, callback, index){
+		setTimeout(function(){
+			$.ajax({
+				type: "GET",
+				cache: false,
+				url: "./tcpCheck.do",
+				contentType : "application/x-www-form-urlencoded; charset=UTF-8",
+				data: data,
+				success: function(resp, textStatus, jqXHR){
+					callback(resp, index);
+				}, 
+				failure: function(resp, textStatus, jqXHR){
+					$(".tcp-check")[index].innerHTML = "FAILURE(ERROR)";
+					/*
+					if(tcpCheckCallCount>0){
+						tcpCheck(data, callback, index);
+						tcpCheckCallCount--;
+					} else {
+						$(".tcp-check")[index].innerHTML = "FAILURE(ERROR)";
+					}
+					*/
+				}
+			});	
+		}, index*500);
+	}
+	
+	function pageMove(){
+		location.href = "./serverList.do?page="+asyncPaging.options.currentPage;
+	}
+</script>
  <audio src="<%=cp%>/media/output.wav" id="beep" autostart="false"></audio>
   
     <!-- end .content --></div>
