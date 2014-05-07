@@ -70,9 +70,12 @@
 		AND approved='unchecked') AS r) 
 	</update>
 	
+	<update id="updateWorkflowApproved">
+	
+	</update>
 
 	<update id="updateApproved" parameterClass="map">
-		UPDATE tbl_request SET approved='approved', approvalId=#approvalId#, approvalDate=#approvalDate#
+		UPDATE tbl_request SET approved=#approved#, approvalId=#approvalId#, approvalDate=#approvalDate#
 		WHERE requestNo =
 		(SELECT *
 		FROM (SELECT MAX(requestNo)

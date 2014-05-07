@@ -870,7 +870,7 @@ public void setServerLock(boolean serverLock) {
  
  @RequestMapping(method=RequestMethod.GET, value="/updateApproved.do")
  public String updateApproved(HttpSession session, HttpServletRequest request) throws Exception{
-	 String userOtp=null, serverName, connectId;
+	 String userOtp=null, serverName, connectId, approved;
 	 Map<String, String> map = new HashMap<>();
 	 Timer timer = new Timer();
 	 MakeOTP makeOTP = new MakeOTP();
@@ -894,6 +894,81 @@ public void setServerLock(boolean serverLock) {
 		 map.put("approvalId", approvalId);
 		 map.put("approvalDate", approvalDate);
 		 
+		 switch (array2[3]) {
+		case "period":
+			approved="period";
+			serverName=map.get("serverName");
+			connectId=map.get("connectId");
+			userOtp=makeOtpAll(serverName, connectId);
+			map.put("password", userOtp);		 
+			map.put("approved", approved); 
+			System.out.println("check : "+ userOtp);
+			 
+			requestService.updatePassword(map);
+			requestService.updateApproved(map);
+			 
+			userOtp=null;
+			break;
+		
+		case "OTP":
+			approved="OTP";
+			map.put("approved", approved); 
+			requestService.updateApproved(map);
+			map.clear();
+			break;
+			
+		case "first":
+			approved="second";
+			map.put("approved", approved);
+			requestService.updateApproved(map);
+			break;
+		case "second":
+			approved="third";
+			map.put("approved", approved);
+			requestService.updateApproved(map);
+			break;
+		case "third":
+			approved="fourth";
+			map.put("approved", approved);
+			requestService.updateApproved(map);
+			break;
+		case "fourth":
+			approved="fifth";
+			map.put("approved", approved);
+			requestService.updateApproved(map);
+			break;
+		case "fifth":
+			
+			if(array2[3].equals("period"))
+			 {
+			 serverName=map.get("serverName");
+			 connectId=map.get("connectId");
+			 userOtp=makeOtpAll(serverName, connectId);
+			 map.put("password", userOtp);		 
+			 
+			 System.out.println("check : "+ userOtp);
+			 
+			 requestService.updatePassword(map);
+			 requestService.updateApproved(map);
+			 
+			 userOtp=null;
+			 
+			 }
+			 else if (array2[3].equals("OTP"))
+			 {
+				 requestService.updateApproved(map);
+				 map.clear();
+			 }
+			
+			requestService.updateApproved(map);
+			break;
+
+		default:
+			break;
+		}
+		 
+		 
+		 /*
 		 if(array2[3].equals("period"))
 		 {
 		 serverName=map.get("serverName");
@@ -914,7 +989,9 @@ public void setServerLock(boolean serverLock) {
 			 requestService.updateApproved(map);
 			 map.clear();
 		 }
+		 */
 	 }
+	 
 	 int approvalCount = array.length;
 	 request.setAttribute("approvalCount", approvalCount);
 	 
@@ -1249,7 +1326,7 @@ public void setServerLock(boolean serverLock) {
  
  @ResponseBody
  @RequestMapping("/checkApproval.do")
- public void checkApproval(HttpServletRequest request, HttpServletResponse response) throws Exception{
+ public void checkApproval(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws Exception{
   ArrayList<Request> requestList = new ArrayList<Request>();
   int page=1;
   try {
@@ -1257,7 +1334,14 @@ public void setServerLock(boolean serverLock) {
   } catch(Exception e){
 	page=1;  
   }
+  String userId = session.getAttribute("userId").toString();
   requestList=requestService.getApprovedList(page);
+  
+  ArrayList<Workflow> workflowList = new ArrayList<Workflow>();
+  
+  workflowList = workflowService.getWorkflowList(userId);
+  
+  
   
   if(requestList.size()>0){
 	  response.getOutputStream().write("승인해야함".getBytes("UTF-8"));
@@ -1499,6 +1583,8 @@ public void setServerLock(boolean serverLock) {
 	 connectId = request.getParameter("connectId");
 	 userId = (String)session.getAttribute("userId");
 	 requestDesc = request.getParameter("requestDesc");
+	 System.out.println(serverService.getWorkflowName(serverName));
+	 
 	 pwdType = "OTP";
 	 
 	 DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
