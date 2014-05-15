@@ -34,4 +34,10 @@
 		WHERE userId=#value#	
 	</select>
 	
+	<select id="getStep" parameterClass="map" resultClass="string">
+		SELECT workflowStep
+		FROM tbl_workflow
+		WHERE userId=#userId# AND workflowName=#workflowName#
+	</select>
+	
 </sqlMap>

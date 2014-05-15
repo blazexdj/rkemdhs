@@ -29,9 +29,7 @@
 						
 						if(uncheckString==response){
 							//console.log('특정함수');
-							//console.log(musicOn());
 							playSound ( 'beep');
-							//alert(message,self.setInterval(check(), 20*1000));
 							//confirm(message);
 						} else {
 							console.log('승인 완료됨');

@@ -1,5 +1,6 @@
 package com.guardon.view;
 
+import java.awt.List;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.InetAddress;
@@ -13,6 +14,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Timer;
@@ -872,6 +874,7 @@ public void setServerLock(boolean serverLock) {
  public String updateApproved(HttpSession session, HttpServletRequest request) throws Exception{
 	 String userOtp=null, serverName, connectId, approved;
 	 Map<String, String> map = new HashMap<>();
+	 Map<String, String> stepCheck = new HashMap<String, String>();
 	 Timer timer = new Timer();
 	 MakeOTP makeOTP = new MakeOTP();
 	 DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
@@ -894,9 +897,9 @@ public void setServerLock(boolean serverLock) {
 		 map.put("approvalId", approvalId);
 		 map.put("approvalDate", approvalDate);
 		 
-		 switch (array2[3]) {
+	switch (array2[3]) {
 		case "period":
-			approved="period";
+			approved="approved";
 			serverName=map.get("serverName");
 			connectId=map.get("connectId");
 			userOtp=makeOtpAll(serverName, connectId);
@@ -908,35 +911,147 @@ public void setServerLock(boolean serverLock) {
 			requestService.updateApproved(map);
 			 
 			userOtp=null;
+			map.clear();
 			break;
 		
 		case "OTP":
-			approved="OTP";
+			approved="approved";
 			map.put("approved", approved); 
 			requestService.updateApproved(map);
 			map.clear();
 			break;
 			
 		case "first":
+			stepCheck.put("serverName", map.get("serverName"));
+			stepCheck.put("approved", "second");
+			if (requestService.stepCheck(stepCheck).equals("0")) {
+				if (requestService.getPwdType(map).equals("period")) {
+					serverName=map.get("serverName");
+					connectId=map.get("connectId");
+					userOtp=makeOtpAll(serverName, connectId);
+					map.put("password", userOtp);		 
+					 
+					System.out.println("check : "+ userOtp);
+					 
+					requestService.updatePassword(map);
+					requestService.updateApproved(map);
+					 
+					userOtp=null;
+					map.clear();
+					break;
+				}else if(requestService.getPwdType(map).equals("period")){
+					requestService.updateApproved(map);
+					map.clear();
+					stepCheck.clear();
+					break;
+				}
+			}else{
 			approved="second";
 			map.put("approved", approved);
 			requestService.updateApproved(map);
+			map.clear();
+			stepCheck.clear();
 			break;
+			}
 		case "second":
-			approved="third";
-			map.put("approved", approved);
-			requestService.updateApproved(map);
-			break;
+			stepCheck.put("serverName", map.get("serverName"));
+			stepCheck.put("approved", "third");
+			if (requestService.stepCheck(stepCheck).equals("0")) {
+				if (requestService.getPwdType(map).equals("period")) {
+					serverName=map.get("serverName");
+					connectId=map.get("connectId");
+					userOtp=makeOtpAll(serverName, connectId);
+					map.put("password", userOtp);		 
+					 
+					System.out.println("check : "+ userOtp);
+					 
+					requestService.updatePassword(map);
+					requestService.updateApproved(map);
+					 
+					userOtp=null;
+					map.clear();
+					stepCheck.clear();
+					break;
+				}else if(requestService.getPwdType(map).equals("period")){
+					requestService.updateApproved(map);
+					map.clear();
+					stepCheck.clear();
+					break;
+				}
+			}else{
+				approved="third";
+				map.put("approved", approved);
+				requestService.updateApproved(map);
+				map.clear();
+				stepCheck.clear();
+				break;
+				}
 		case "third":
+			stepCheck.put("serverName", map.get("serverName"));
+			stepCheck.put("approved", "fourth");
+			if (requestService.stepCheck(stepCheck).equals("0")) {
+				if (requestService.getPwdType(map).equals("period")) {
+					serverName=map.get("serverName");
+					connectId=map.get("connectId");
+					userOtp=makeOtpAll(serverName, connectId);
+					map.put("password", userOtp);		 
+					 
+					System.out.println("check : "+ userOtp);
+					 
+					requestService.updatePassword(map);
+					requestService.updateApproved(map);
+					 
+					userOtp=null;
+					map.clear();
+					stepCheck.clear();
+					break;
+				}else if(requestService.getPwdType(map).equals("period")){
+					requestService.updateApproved(map);
+					map.clear();
+					stepCheck.clear();
+					break;
+				}
+			}else{
 			approved="fourth";
 			map.put("approved", approved);
 			requestService.updateApproved(map);
+			map.clear();
+			stepCheck.clear();
 			break;
+			}
 		case "fourth":
+			stepCheck.put("serverName", map.get("serverName"));
+			stepCheck.put("approved", "fifth");
+			if (requestService.stepCheck(stepCheck).equals("0")) {
+				if (requestService.getPwdType(map).equals("period")) {
+					serverName=map.get("serverName");
+					connectId=map.get("connectId");
+					userOtp=makeOtpAll(serverName, connectId);
+					map.put("password", userOtp);		 
+					 
+					System.out.println("check : "+ userOtp);
+					 
+					requestService.updatePassword(map);
+					requestService.updateApproved(map);
+					 
+					userOtp=null;
+					map.clear();
+					stepCheck.clear();
+					break;
+				}else if(requestService.getPwdType(map).equals("period")){
+					requestService.updateApproved(map);
+					map.clear();
+					stepCheck.clear();
+					break;
+				}
+			}else{
 			approved="fifth";
 			map.put("approved", approved);
 			requestService.updateApproved(map);
+			map.clear();
+			stepCheck.clear();
 			break;
+			}
 		case "fifth":
 			
 			if(array2[3].equals("period"))
@@ -952,7 +1067,7 @@ public void setServerLock(boolean serverLock) {
 			 requestService.updateApproved(map);
 			 
 			 userOtp=null;
-			 
+			 map.clear();
 			 }
 			 else if (array2[3].equals("OTP"))
 			 {
@@ -961,35 +1076,14 @@ public void setServerLock(boolean serverLock) {
 			 }
 			
 			requestService.updateApproved(map);
+			map.clear();
 			break;
 
 		default:
+			map.clear();
+			stepCheck.clear();
 			break;
 		}
-		 
-		 
-		 /*
-		 if(array2[3].equals("period"))
-		 {
-		 serverName=map.get("serverName");
-		 connectId=map.get("connectId");
-		 userOtp=makeOtpAll(serverName, connectId);
-		 map.put("password", userOtp);		 
-		 
-		 System.out.println("check : "+ userOtp);
-		 
-		 requestService.updatePassword(map);
-		 requestService.updateApproved(map);
-		 
-		 userOtp=null;
-		 
-		 }
-		 else if (array2[3].equals("OTP"))
-		 {
-			 requestService.updateApproved(map);
-			 map.clear();
-		 }
-		 */
 	 }
 	 
 	 int approvalCount = array.length;
@@ -1309,20 +1403,101 @@ public void setServerLock(boolean serverLock) {
   return "approvalResult";
  }
  @RequestMapping("/approvalUserList.do")
- public String approvalUserList(HttpServletRequest request) throws Exception{
-  
-
-  ArrayList<Request> requestList = new ArrayList<Request>();
-  int page=1;
-  try {
-	page=Integer.parseInt(request.getParameter("page"));
-  } catch(Exception e){
-	page=1;  
-  }
-  requestList=requestService.getApprovedList(page);  
-  request.setAttribute("requestList", requestList);
-  return "approvalUserList";
- }
+ public String approvalUserList(HttpServletRequest request, HttpSession session) throws Exception{
+	 
+	String userId = session.getAttribute("userId").toString();
+	ArrayList<Workflow> workflowList = new ArrayList<Workflow>();
+	System.out.println(userId);
+	workflowList = workflowService.getWorkflowList(userId);
+	
+	ArrayList<String> serverName = new ArrayList<String>();
+	ArrayList<String> workflowStep = new ArrayList<String>();
+	ArrayList<Request> requestList = new ArrayList<Request>();
+	ArrayList<Request> requestListTemp = new ArrayList<Request>();
+	Map<String, String> map = new HashMap<>();
+	int page=1;
+	try {
+		page=Integer.parseInt(request.getParameter("page"));
+	  } catch(Exception e){
+		  page=1;  
+	  }
+	
+	//////////////////////////////////////////////////////////////////////////////////////////////////////
+	
+	requestListTemp = requestService.getApprovedList(page);
+	
+	for (int i = 0; i < requestListTemp.size(); i++) {
+		if (requestListTemp.get(i).getApproved().equals("unchecked"))
+		{
+			requestList.add(requestListTemp.get(i));
+		}
+		else
+		{
+			map.put("workflowName", serverService.getWorkflowName(requestListTemp.get(i).getServerName()));
+			map.put("userId", userId);
+				try {
+					if (workflowService.getStep(map).equals(
+							requestListTemp.get(i).getApproved())) {
+						requestList.add(requestListTemp.get(i));
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+		}
+		map.clear();
+	}
+	//////////////////////////////////////////////////////////////////////////////////////////////////////
+	
+	//requestList=requestService.getApprovedList(page);
+	
+	/*
+	for (int i = 0; i < workflowList.size(); i++) {
+		serverName = serverService.getServerNamebyWorkflow(workflowList.get(i).getWorkflowName());
+		System.out.println("워크플로우 이름 : " + workflowList.get(i).getWorkflowName());
+		System.out.println("워크플로우 소속 서버 이름 : "+ serverService.getServerNamebyWorkflow(workflowList.get(i).getWorkflowName()));
+		System.out.println("워크플로우 순서 : " + workflowList.get(i).getWorkflowStep());
+		
+		for (int j = 0; j < serverName.size(); j++) {
+			System.out.println( serverName.get(j));
+		}
+	}
+	*/
+	/*
+	System.out.println("삭제전 리스트 크기 : " +requestList.size());
+	for (int i = 0; i < requestList.size(); i++) {
+		System.out.println("i : " + i);
+		System.out.println("serverName : " + requestList.get(i).getServerName());
+		for (int j = 0; j < workflowList.size(); j++) {
+			if (serverService.countServerNamebyWorkflow(workflowList.get(j).getWorkflowName())!=0) {
+				System.out.println(workflowService.getWorkflowList(userId).get(j).getWorkflowName());
+				for (int k = 0; k < serverService.getServerNamebyWorkflow(workflowList.get(j).getWorkflowName()).size(); k++) {
+					serverName.add(serverService.getServerNamebyWorkflow(workflowList.get(j).getWorkflowName()).get(k));
+					workflowStep.add(workflowList.get(j).getWorkflowStep());
+					//System.out.println("==========================================================================");
+					//System.out.println("requestList serverName : "+requestList.get(i).getServerName());
+					//System.out.println("serverName List : "+serverName.get(k));
+					//System.out.println("requestList approved : "+requestList.get(i).getApproved());
+					//System.out.println("worflowList workflowStep : "+workflowList.get(j).getWorkflowStep());
+					System.out.println("1,2행 같은지 : "+requestList.get(i).getServerName().equals(serverName.get(k)));
+					System.out.println("3,4행 같은지 : "+requestList.get(i).getApproved().equals(workflowStep.get(k)) );
+					boolean check1 = requestList.get(i).getServerName().equals(serverName.get(k));
+					boolean check2 = requestList.get(i).getApproved().equals(workflowStep.get(k));
+					if (check1 && check2) {
+						System.out.println(i+"번째 request 삭제");
+						requestList.remove(i);
+					}
+				}
+			}
+		}
+	
+	}
+	
+	System.out.println("삭제후 리스트 크기 : " +requestList.size());
+	*/
+	request.setAttribute("requestList", requestList);
+	return "approvalUserList";
+	}
+	
  
  @ResponseBody
  @RequestMapping("/checkApproval.do")
@@ -1336,9 +1511,7 @@ public void setServerLock(boolean serverLock) {
   }
   String userId = session.getAttribute("userId").toString();
   requestList=requestService.getApprovedList(page);
-  
   ArrayList<Workflow> workflowList = new ArrayList<Workflow>();
-  
   workflowList = workflowService.getWorkflowList(userId);
   
   

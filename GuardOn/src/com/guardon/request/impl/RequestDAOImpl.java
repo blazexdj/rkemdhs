@@ -27,7 +27,8 @@ public class RequestDAOImpl implements RequestDAO{
 	@SuppressWarnings("unchecked")
 	@Override
 	public ArrayList<Request> getApprovedList(int page) throws Exception {
-		return (ArrayList<Request>) sqlMapClient.queryForList("Request.getApprovedList", page);
+		//return (ArrayList<Request>) sqlMapClient.queryForList("Request.getApprovedList", page, approved);
+		return (ArrayList<Request>)sqlMapClient.queryForList("Request.getApprovedList", page);
 	}
 
 	@Override
@@ -93,6 +94,18 @@ public class RequestDAOImpl implements RequestDAO{
 	@Override
 	public void expirePeriodPwd(String today) throws Exception {
 		sqlMapClient.update("Request.expirePeriodPwd", today);
+	}
+	
+	@Override
+	public String stepCheck(Map<String, String> map) throws Exception {
+
+		return (String) sqlMapClient.queryForObject("Request.stepCheck", map);
+	}
+
+	@Override
+	public String getPwdType(Map<String, String> map) throws Exception {
+		
+		return (String) sqlMapClient.queryForObject("Request.getPwdType", map);
 	}
 
 

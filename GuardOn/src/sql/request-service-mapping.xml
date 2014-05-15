@@ -43,10 +43,9 @@
 	</insert>
 
 	<select id="getApprovedList" parameterClass="int" resultClass="request">
-		SELECT serverName, requestDesc, connectId, userId, pwdType, startDate,
-		endDate
+		SELECT *
 		FROM tbl_request
-		WHERE approved= 'unchecked'
+		WHERE approved= 'unchecked' OR approved='first' OR approved='second' OR approved = 'third' OR approved = 'fourth' OR approved = 'fifth'
 	</select>
 
 	<select id="getOtpApproved" parameterClass="map" resultClass="string">		
@@ -117,5 +116,21 @@
 		UPDATE tbl_request SET password='', approved='expired'
 		WHERE approved='approved' AND pwdType='period' AND endDate &lt; #value#
 	</update>
-
+	
+	<select id="stepCheck" parameterClass="map" resultClass="string">
+		SELECT COUNT(*) approved
+		FROM tbl_request
+		WHERE serverName = #serverName#,approved = #approved#
+	</select>
+	
+	<select id="getPwdType" parameterClass="map" resultClass="string">
+		SELECT pwdType
+		FROM tbl_request
+		WHERE requestNo =
+		(SELECT *
+		FROM (SELECT MAX(requestNo)
+		FROM tbl_request
+		WHERE serverName=#serverName# AND connectId=#connectId# AND userId=#userId#) AS r) 
+	</select>
+	
 </sqlMap>

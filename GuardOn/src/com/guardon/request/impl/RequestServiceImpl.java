@@ -93,6 +93,16 @@ public class RequestServiceImpl implements RequestService{
 	public void expirePeriodPwd(String today) throws Exception {
 		requestDAO.expirePeriodPwd(today);
 	}
+	
+	@Override
+	public String stepCheck(Map<String, String> map) throws Exception {
+		return requestDAO.stepCheck(map);
+	}
+
+	@Override
+	public String getPwdType(Map<String, String> map) throws Exception {
+		return requestDAO.getPwdType(map);
+	}
 
 
 }

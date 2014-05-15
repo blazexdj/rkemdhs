@@ -40,4 +40,8 @@ public interface ServerDAO {
 	public String getServerName(String serverName) throws Exception;
 	
 	public void setWorkflowName(Map<String, String> map) throws Exception;
+	
+	public ArrayList<String> getServerNamebyWorkflow(String workflowName) throws Exception;
+	
+	public int countServerNamebyWorkflow(String workflowName) throws Exception;
 }

@@ -1,6 +1,7 @@
 package com.guardon.workflow.impl;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -26,6 +27,11 @@ public class WorkflowServiceImpl implements WorkflowService{
 	@Override
 	public ArrayList<Workflow> getWorkflowList(String userId) throws Exception {
 		return workflowDAO.getWorkflowList(userId);
+	}
+	
+	@Override
+	public String getStep(Map<String, String> map) throws Exception {
+		return workflowDAO.getStep(map);
 	}
 
 }

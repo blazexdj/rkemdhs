@@ -110,6 +110,18 @@
 		WHERE serverName = #serverName#
 		
 	</update>
+	
+	<select id="getServerNamebyWorkflow" parameterClass="string" resultClass="string">
+		SELECT serverName
+		FROM tbl_server
+		WHERE workflowName=#workflowName#
+	</select>
+	
+	<select id="countServerNamebyWorkflow" parameterClass="string" resultClass="int">
+		SELECT COUNT(*) serverName
+		FROM tbl_server
+		WHERE workflowName=#workflowName#
+	</select>
 
 	
 </sqlMap>

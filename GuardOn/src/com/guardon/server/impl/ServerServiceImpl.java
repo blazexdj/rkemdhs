@@ -106,4 +106,14 @@ public class ServerServiceImpl implements ServerService{
 		serverDAO.setWorkflowName(map);
 	}
 
+	@Override
+	public ArrayList<String> getServerNamebyWorkflow(String workflowName) throws Exception {
+		return serverDAO.getServerNamebyWorkflow(workflowName);
+	}
+
+	@Override
+	public int countServerNamebyWorkflow(String workflowName) throws Exception {
+		return serverDAO.countServerNamebyWorkflow(workflowName);
+	}
+
 }

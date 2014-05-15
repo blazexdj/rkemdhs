@@ -21,4 +21,6 @@ public interface RequestDAO {
 	public String checkDuplReq(Map<String, String> map) throws Exception;
 	public ArrayList<Request> getExpirePeriodPwdTarget(String today) throws Exception;
 	public void expirePeriodPwd(String today) throws Exception;
+	public String stepCheck(Map<String, String> map	) throws Exception;
+	public String getPwdType(Map<String, String> map	) throws Exception;
 }

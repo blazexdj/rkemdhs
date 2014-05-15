@@ -107,4 +107,14 @@ public class ServerDAOImpl implements ServerDAO{
 		sqlMapClient.update("Server.setWorkflowName", map);
 	}
 
+	@Override
+	public ArrayList<String> getServerNamebyWorkflow(String workflowName) throws Exception {
+		return  (ArrayList<String>) sqlMapClient.queryForList("Server.getServerNamebyWorkflow",workflowName);
+	}
+
+	@Override
+	public int countServerNamebyWorkflow(String workflowName) throws Exception {
+		return (int) sqlMapClient.queryForObject("Server.countServerNamebyWorkflow", workflowName);
+	}
+
 }
